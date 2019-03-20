@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+// @flow
+import * as React from 'react'
+import { Route, Redirect } from "react-router-dom"
+import Login from './pages/Login'
+import CreateService from "./pages/CreateService"
 
-class App extends Component {
+type Props = {}
+type State = {}
+
+class App extends React.Component<Props, State> {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="App">               
+        <Route exact path="/" render={() => (
+          window.localStorage.getItem('token') ? <Redirect to="/service/create"/> : <Login />
+        )} />
+        <Route exact path="/service/create" render={() => (
+          !window.localStorage.getItem('token') ? <Redirect to="/"/> : <CreateService />
+        )}></Route>
       </div>
     );
   }
 }
 
-export default App;
+export default App
